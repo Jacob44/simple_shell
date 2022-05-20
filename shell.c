@@ -1,13 +1,13 @@
 #include "shell.h"
 char *addis_read_line(void);
 char **addis_tokenize_line(char *line);
-void addis_execute(char** parsed);
+void addis_execute(char **parsed);
 /**
  * main - the main program to run the whole shell.
  * @ac: number of commands.
  * @av: commands.
  *
- * Retrun: 1 for success and 0 otherwise.
+ * Return: 1 for success and 0 otherwise.
  */
 int main(int ac, char **av)
 {
@@ -18,26 +18,27 @@ int main(int ac, char **av)
 	int int_mode;
 	int status;
 
-	while(1)
+	while (1)
 	{
 		int_mode = isatty(STDIN_FILENO);
 		if (int_mode == 1)
 			write(STDOUT_FILENO, "#cisfun$ ", 9);
 		buffer = addis_read_line();
 		command = addis_tokenize_line(buffer);
-		/*if (strcmp(command[0], "exit") == 0)
-			addis_exit(command);
+		/*
+		 * if (strcmp(command[0], "exit") == 0)
+		 * addis_exit(command);
 		*/
 		addis_execute(command);
 		free(buffer);
 		free(command);
 	}
-	return EXIT_SUCCESS;
+	return (EXIT_SUCCESS);
 }
 /**
- * addis_real_line - read the input.
- * 
- * Retrun: the written buffer room..
+ * addis_read_line - read the input.
+ *
+ * Return: the written buffer room
  */
 char *addis_read_line(void)
 {
@@ -49,7 +50,7 @@ char *addis_read_line(void)
 
 	if (textread == EOF)
 	{
-		if(line)
+		if (line)
 		{
 			free(line);
 			line = NULL;
@@ -76,11 +77,11 @@ char *addis_read_line(void)
 char **addis_tokenize_line(char *line)
 {
 	int counter = 0, bufsize = ADDIS_TOK_BUFSIZE;
-	char **toks = malloc(bufsize * sizeof(char*));
+	char **toks = malloc(bufsize * sizeof(char *));
 	char *delim = " \t\r\n\a";
 	char *tok;
 
-	if(toks == NULL)
+	if (toks == NULL)
 	{
 		exit(EXIT_FAILURE);
 	}
@@ -92,7 +93,7 @@ char **addis_tokenize_line(char *line)
 		tok = strtok(NULL, delim);
 	}
 	toks[counter] = NULL;
-	return toks;
+	return (toks);
 }
 /**
  * addis_execute - execute the commands.
@@ -100,19 +101,18 @@ char **addis_tokenize_line(char *line)
  *
  * Return: nothing
  */
-void addis_execute(char** parsed)
+void addis_execute(char **parsed)
 {
-	//Forking a child
 	pid_t pid = fork();
 
-	if(pid == -1)
+	if (pid == -1)
 	{
 		printf("\nForking failed..");
 		return;
 	}
 	else if (!pid)
 	{
-		//if (execvp(parsed[0], parsed) < 0)
+		/*if (execvp(parsed[0], parsed) < 0)*/
 		printf("./shell: No such file or directory\n");
 		exit(EXIT_FAILURE);
 	}
