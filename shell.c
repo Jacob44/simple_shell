@@ -112,7 +112,7 @@ void addis_execute(char **parsed)
 	}
 	else if (!pid)
 	{
-		/*if (execvp(parsed[0], parsed) < 0)*/
+		if (execvp(parsed[0], parsed) < 0)
 		printf("./shell: No such file or directory\n");
 		exit(EXIT_FAILURE);
 	}
